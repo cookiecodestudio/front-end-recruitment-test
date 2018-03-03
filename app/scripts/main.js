@@ -73,4 +73,39 @@
   }
 
   // Your custom JavaScript goes here
+  var project = {
+    CloneButton: function(buttonSelector, imageSelector) {
+      this.button = document.querySelector(buttonSelector);
+      this.image = document.querySelector(imageSelector);
+      this.isBinded = false;
+
+      if (this.button && this.image) {
+        this.isBinded = true;
+        this.button.addEventListener('click', function() {
+          this.image.parentNode.insertAdjacentHTML(
+              'beforeend',
+              this.image.outerHTML
+          );
+        }.bind(this), false);
+      }
+    },
+    initImageCloneButton: function() {
+      var completePairs = [];
+
+      for (var i = 0, argument; i < arguments.length; i++) {
+        if (arguments[i].btn && arguments[i].img) {
+          argument = new this.CloneButton(arguments[i].btn, arguments[i].img);
+          if (argument.isBinded) {
+            completePairs.push(argument);
+          }
+        }
+      }
+
+      return completePairs;
+    }
+  };
+  project.initImageCloneButton({
+    btn: '#overview [action="button"]',
+    img: '#overview img'
+  });
 })();
