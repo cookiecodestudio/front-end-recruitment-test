@@ -296,19 +296,19 @@
                                 <span class="circle-icon">1</span> Personal Information
                             </h4>
                             <div class="page-form__input-wrapper mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col">
-                                <input id="name" type="text" name="name" placeholder="Elon">
+                                <input id="name" type="text" name="name" placeholder="Elon" form-required="text">
                                 <label for="name">First name</label>
                             </div>
                             <div class="page-form__input-wrapper mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col">
-                                <input id="surname" type="text" name="surname" placeholder="Musk">
+                                <input id="surname" type="text" name="surname" placeholder="Musk" form-required="text">
                                 <label for="surname">Last name</label>
                             </div>
                             <div class="page-form__input-wrapper mdl-cell mdl-cell--12-col-tablet mdl-cell--12-col">
-                                <input id="email" type="email" name="email" placeholder="elon@spacex.com">
+                                <input id="email" type="email" name="email" placeholder="elon@spacex.com" form-required="email">
                                 <label for="email">Email</label>
                             </div>
                             <div class="page-form__input-wrapper page-form__input-wrapper--with-icon mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col">
-                                <select id="country" name="country">
+                                <select id="country" name="country" form-locale="true">
                                     <option value="US">United States</option>
                                     <option value="PL">Poland</option>
                                 </select>
@@ -316,11 +316,11 @@
                                 <i class="glyphicon small glyphicon-chevron-down"></i>
                             </div>
                             <div class="page-form__input-wrapper mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col">
-                                <input id="postcode" type="text" name="postcode" placeholder="10001">
+                                <input id="postcode" type="text" name="postcode" placeholder="10001" form-required="postcode">
                                 <label for="postcode">Postal code</label>
                             </div>
                             <div class="page-form__input-wrapper mdl-cell mdl-cell--12-col-tablet mdl-cell--12-col">
-                                <input id="phone" type="tel" name="phone" placeholder="(212) 692-93-92">
+                                <input id="phone" type="tel" name="phone" placeholder="(212) 692-93-92" form-required="tel" input-mask="(###) ###-##-##">
                                 <label for="phone">Phone</label>
                             </div>
                         </div>
@@ -330,18 +330,17 @@
                                 <i class="glyphicon glyphicon-lock"></i>
                             </h4>
                             <div class="page-form__input-wrapper mdl-cell mdl-cell--12-col-tablet mdl-cell--12-col">
-                                <input id="credit-card-no" type="text" name="credit-card-number"
-                                       placeholder="0000-0000-0000-0000">
+                                <input id="credit-card-no" type="text" name="credit-card-number" placeholder="0000-0000-0000-0000" form-required="creditcard" input-mask="####-####-####-####">
                                 <label for="credit-card-no">Credit card number</label>
                                 <i class="icon cardlogo visa"></i>
                             </div>
                             <div class="page-form__input-wrapper mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col">
-                                <input id="security-code" type="password" name="security-code" placeholder="***">
+                                <input id="security-code" type="password" name="security-code" placeholder="***" form-required="cardcode" form-error-msg="The code consists of three characters">
                                 <label for="security-code">Security code</label>
                                 <i class="icon circle-icon circle-icon--gray circle-icon--pointer">?</i>
                             </div>
                             <div class="page-form__input-wrapper mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col">
-                                <input id="exp-date" type="text" name="expiration-date" placeholder="MM / YY">
+                                <input id="exp-date" type="text" name="expiration-date" placeholder="MM / YY" form-required="carddate" input-mask="## / ##">
                                 <label for="exp-date">Expiration date</label>
                             </div>
                         </div>

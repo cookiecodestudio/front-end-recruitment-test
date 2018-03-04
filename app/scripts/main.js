@@ -102,10 +102,175 @@
       }
 
       return completePairs;
+    },
+    checkoutForm: function(formId) {
+      const requiredAttribute = 'form-required';
+      const localeAttribute = 'form-locale';
+      const inputMaskAttribute = 'input-mask';
+      const inputErrorMsgAttribute = 'form-error-msg';
+      const markerSign = '#';
+      const separatorSigns = '.,-()[]{}/\\';
+      const validationClasses = {
+        valid: 'valid',
+        invalid: 'error',
+        invalidMsg: 'error-msg'
+      };
+      const defaultErrorMsg = 'This field is required';
+      const validationRules = {
+        tel: {
+          length: 10
+        },
+        email: new RegExp(/^[a-z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/),
+        postcode: {
+          default: {
+            length: 5
+          },
+          US: {
+            length: 5
+          }
+        },
+        cardcode: {
+          length: 3
+        },
+        cardnumber: {
+          length: 16
+        },
+        carddate: {
+          length: 4
+        }
+      };
+      var form = document.getElementById(formId);
+      var requiredInputs = form ? form.querySelectorAll('input[' + requiredAttribute + ']') : [];
+      var requiredCount = requiredInputs.length;
+      var isDigit = function(char) {
+        return /\d/.test(char);
+      };
+      var signIsReserved = function(char) {
+        return separatorSigns.indexOf(char) > 0;
+      };
+      var checkForLocale = function() {
+        var locale = form.querySelector('[' + localeAttribute + ']');
+        return locale ? locale.options[locale.selectedIndex].value : '';
+      };
+      var maskInput = function(input, mask) {
+        var inputMask = mask || input.getAttribute(inputMaskAttribute);
+
+        if (inputMask) {
+          inputMask = inputMask.trim();
+          var currentValue = input.value.split('').filter(function(sign) {
+            return !signIsReserved(sign) && sign.trim() !== '';
+          });
+          var maskedValue = '';
+
+          for (var i = 0; i < inputMask.length; i++) {
+            if (!currentValue.length) {
+              break;
+            }
+            maskedValue += inputMask[i] === markerSign ? currentValue.shift() : inputMask[i];
+          }
+
+          input.value = maskedValue;
+
+          return input;
+        }
+      };
+      var validField = function(field) {
+        var isValid = false;
+        var errorMsg = document.createElement('small');
+        errorMsg.classList.add(validationClasses.invalidMsg);
+
+        switch (field.getAttribute(requiredAttribute)) {
+          case 'text':
+            isValid = field.value.length;
+            break;
+
+          case 'email':
+            isValid = field.value.match(validationRules.email);
+            break;
+
+          case 'tel':
+            isValid = field.value.split('').filter(isDigit).length === validationRules.tel.length;
+            break;
+
+          case 'postcode':
+            var localeConfig = validationRules.postcode[checkForLocale()];
+            isValid = field.value.split('').filter(isDigit).length === (localeConfig ? localeConfig.length : validationRules.postcode.default.length);
+            break;
+
+          case 'creditcard':
+            isValid = field.value.split('').filter(isDigit).length === validationRules.cardnumber.length;
+            break;
+
+          case 'cardcode':
+            isValid = field.value.length === validationRules.cardcode.length;
+            break;
+
+          case 'carddate':
+            var date = field.value.split('').filter(isDigit);
+
+            if (date.length === validationRules.carddate.length) {
+              date = date.join('').match(/.{1,2}/g);
+              isValid = date && date[0] && date[1] && parseInt(date[0]) <= 12;
+            }
+            break;
+
+          default:
+            isValid = false;
+        }
+
+        if (isValid) {
+          field.classList.add(validationClasses.valid);
+          field.classList.remove(validationClasses.invalid);
+          field.parentNode.classList.remove(validationClasses.invalid);
+          if (field.parentNode.querySelector('.' + validationClasses.invalidMsg)) {
+            field.parentNode.querySelector('.' + validationClasses.invalidMsg).remove();
+          }
+        } else {
+          field.classList.add(validationClasses.invalid);
+          field.classList.remove(validationClasses.valid);
+          field.parentNode.classList.add(validationClasses.invalid);
+          if (!field.parentNode.querySelector('.' + validationClasses.invalidMsg)) {
+            errorMsg.innerHTML = field.getAttribute(inputErrorMsgAttribute) || defaultErrorMsg;
+            field.parentNode.insertBefore(errorMsg, field.nextSibling);
+          }
+        }
+
+        return isValid;
+      };
+      var validForm = function() {
+        var validFieldsCount = 0;
+
+        for (var i = 0; i < requiredInputs.length; i++) {
+          if (validField(requiredInputs[i])) {
+            validFieldsCount++;
+          }
+        }
+
+        return validFieldsCount;
+      };
+
+      if (requiredCount) {
+        for (var i = 0; i < requiredInputs.length; i++) {
+          requiredInputs[i].addEventListener('blur', function(e) {
+            validField(e.target);
+          }, true);
+          requiredInputs[i].addEventListener('keyup', function(e) {
+            maskInput(e.target);
+          }, true);
+        }
+
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          if (validForm() === requiredCount) {
+            e.target.submit();
+          }
+        }, false);
+      }
     }
   };
   project.initImageCloneButton({
     btn: '#overview [action="button"]',
     img: '#overview img'
   });
+  project.checkoutForm('checkout-form');
 })();
