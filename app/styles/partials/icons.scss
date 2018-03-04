@@ -1,0 +1,42 @@
+@import 'colors.scss';
+// Glyph icons
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+
+.glyphicon {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.circle-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 600;
+    border: 1px solid transparent;
+    border-radius: 100%;
+
+    &--gray {
+        color: $gray;
+        border-color: $gray;
+    }
+
+    &--pointer {
+        cursor: pointer;
+    }
+}
+
+.cardlogo {
+    width: 45px;
+    height: 30px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    &.visa {
+        background-image: url("../../images/cardslogo/visa.png");
+    }
+}
